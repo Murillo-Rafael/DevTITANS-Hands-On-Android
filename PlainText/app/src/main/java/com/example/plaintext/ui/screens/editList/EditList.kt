@@ -1,23 +1,19 @@
 package com.example.plaintext.ui.screens.editList
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -42,7 +38,10 @@ data class EditListState(
 )
 
 fun isPasswordEmpty(password: PasswordInfo): Boolean {
-    return password.name.isEmpty() && password.login.isEmpty() && password.password.isEmpty() && password.notes.isEmpty()
+    return password.name.isEmpty() &&
+            password.login.isEmpty() &&
+            password.password.isEmpty() &&
+            password.notes.isNullOrEmpty()
 }
 
 @Composable
@@ -51,9 +50,84 @@ fun EditList(
     navigateBack: () -> Unit,
     savePassword: (password: PasswordInfo) -> Unit
 ) {
+    val password = args.password
+    val title = if (isPasswordEmpty(password)) {
+        "Adicionar nova senha"
+    } else {
+        "Editar senha"
+    }
 
+    val nomeState = rememberSaveable { mutableStateOf(password.name) }
+    val usuarioState = rememberSaveable { mutableStateOf(password.login) }
+    val senhaState = rememberSaveable { mutableStateOf(password.password) }
+    val notasState = rememberSaveable { mutableStateOf(password.notes ?: "") }
+
+    Scaffold(
+        topBar = {
+            TopBarComponent()
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize()
+                .background(Color(0xFF1B0B02)),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = title,
+                color = Color.White,
+                fontSize = 22.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFF9AC42F))
+                    .padding(horizontal = 30.dp, vertical = 14.dp)
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            EditInput(
+                textInputLabel = "Nome",
+                textInputState = nomeState
+            )
+
+            EditInput(
+                textInputLabel = "Usuário",
+                textInputState = usuarioState
+            )
+
+            EditInput(
+                textInputLabel = "Senha",
+                textInputState = senhaState
+            )
+
+            EditInput(
+                textInputLabel = "Notas",
+                textInputState = notasState,
+                textInputHeight = 170
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Button(
+                onClick = {
+                    savePassword(
+                        PasswordInfo(
+                            id = password.id,
+                            name = nomeState.value,
+                            login = usuarioState.value,
+                            password = senhaState.value,
+                            notes = notasState.value
+                        )
+                    )
+                    navigateBack()
+                }
+            ) {
+                Text("Salvar")
+            }
+        }
+    }
 }
-
 
 @Composable
 fun EditInput(
@@ -76,12 +150,21 @@ fun EditInput(
             value = textState,
             onValueChange = { textState = it },
             label = { Text(textInputLabel) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.White,
+                unfocusedTextColor = Color.White,
+                focusedLabelColor = Color.White,
+                unfocusedLabelColor = Color.White,
+                cursorColor = Color.White,
+                focusedBorderColor = Color.White,
+                unfocusedBorderColor = Color.White
+            ),
             modifier = Modifier
                 .height(textInputHeight.dp)
                 .fillMaxWidth()
         )
-
     }
+
     Spacer(modifier = Modifier.height(10.dp))
 }
 
