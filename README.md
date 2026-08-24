@@ -107,6 +107,36 @@ DevTITANS-Hands-On-Android/
 ├── install_android_studio.sh    # Script auxiliar para instalação da IDE no Linux
 └── run_android_studio.sh        # Script auxiliar para execução da IDE
 
+## 6. UI e Navegação (Compose & Material 3)
+
+### 🎨 Design System e Estilização
+
+A interface utiliza o **Material Design 3**, aproveitando esquemas de cores adaptativos e tipografia padronizada em `ui/theme/`.
+
+### 📺 Telas do Aplicativo
+
+1. **PasswordListScreen:** Exibe a lista de senhas cadastradas através de um `LazyColumn`, permitindo filtrar e navegar para os detalhes ou formulário.
+
+2. **PasswordDetailScreen:** Apresenta as informações completas do registro selecionado (com opção de cópia e exclusão).
+
+3. **PasswordFormScreen:** Formulário reutilizável para **Criação** e **Edição** de credenciais.
+
+### 🧭 Navegação (`AppNavigation.kt`)
+
+As rotas são tratadas via `NavHost` com argumentos tipados:
+
+```kotlin
+sealed class Screen(val route: String) {
+    object List : Screen("password_list")
+    object Form : Screen("password_form?passwordId={passwordId}") {
+        fun createRoute(passwordId: Long? = null) = "password_form?passwordId=${passwordId ?: -1L}"
+    }
+    object Detail : Screen("password_detail/{passwordId}") {
+        fun createRoute(passwordId: Long) = "password_detail/$passwordId"
+    }
+}
+
+
 ## 4. Configuração do Ambiente
 
 ### 📋 Requisitos do Sistema
@@ -180,31 +210,3 @@ Bash
 }
 
 
-## 6. UI e Navegação (Compose & Material 3)
-
-### 🎨 Design System e Estilização
-
-A interface utiliza o **Material Design 3**, aproveitando esquemas de cores adaptativos e tipografia padronizada em `ui/theme/`.
-
-### 📺 Telas do Aplicativo
-
-1. **PasswordListScreen:** Exibe a lista de senhas cadastradas através de um `LazyColumn`, permitindo filtrar e navegar para os detalhes ou formulário.
-
-2. **PasswordDetailScreen:** Apresenta as informações completas do registro selecionado (com opção de cópia e exclusão).
-
-3. **PasswordFormScreen:** Formulário reutilizável para **Criação** e **Edição** de credenciais.
-
-### 🧭 Navegação (`AppNavigation.kt`)
-
-As rotas são tratadas via `NavHost` com argumentos tipados:
-
-```kotlin
-sealed class Screen(val route: String) {
-    object List : Screen("password_list")
-    object Form : Screen("password_form?passwordId={passwordId}") {
-        fun createRoute(passwordId: Long? = null) = "password_form?passwordId=${passwordId ?: -1L}"
-    }
-    object Detail : Screen("password_detail/{passwordId}") {
-        fun createRoute(passwordId: Long) = "password_detail/$passwordId"
-    }
-}
