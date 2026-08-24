@@ -136,6 +136,11 @@ sealed class Screen(val route: String) {
     }
 }
 
+7. Wiki — Gerenciamento de Estado (ViewModel & Coroutines)
+⚡ Estrutura do UiState
+
+Para representar o estado da interface gráfica de forma determinística, utiliza-se uma classe selada de estado:
+
 
 ## 4. Configuração do Ambiente
 
