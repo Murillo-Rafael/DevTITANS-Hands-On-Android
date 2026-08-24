@@ -70,42 +70,56 @@ O seu propósito principal é servir como uma aplicação de estudo prático par
 
 O projeto adota a arquitetura **MVVM (Model-View-ViewModel)** com um fluxo de dados unidirecional (**Unidirectional Data Flow - UDF**):
 
-┌────────────────────────────────────────────────────────┐
-│                        VIEW                            │
-│            (Jetpack Compose UI Screens)                │
-└──────────────────────────┬─────────────────────────────┘
-│  Dispara Ações/Eventos (ex: onClick)
-▼
-┌────────────────────────────────────────────────────────┐
-│                     VIEWMODEL                          │
-│             (StateFlow / UiState Holder)               │
-└──────────────────────────┬─────────────────────────────┘
-│  Chama operações assíncronas (Coroutines)
-▼
-┌────────────────────────────────────────────────────────┐
-│                    REPOSITORY                          │
-│        (Abstração da Origem dos Dados)                 │
-└──────────────────────────┬─────────────────────────────┘
-│  Executa Queries
-▼
-┌────────────────────────────────────────────────────────┐
-│                    ROOM DATABASE                       │
-│                  (SQLite Persistente)                  │
-└──────────────────────────┴─────────────────────────────┘
+
+ ┌────────────────────────────────────────────────────────┐
+ │                        VIEW                            │
+ │            (Jetpack Compose UI Screens)                │
+ └──────────────────────────┬─────────────────────────────┘
+                            │   Dispara Ações/Eventos (ex: onClick)
+                            ▼
+                            
+ ┌────────────────────────────────────────────────────────┐
+ │                     VIEWMODEL                          │
+ │             (StateFlow / UiState Holder)               │
+ └──────────────────────────┬─────────────────────────────┘
+                            │   Chama operações assíncronas (Coroutines)
+                            ▼
+                            
+ ┌────────────────────────────────────────────────────────┐
+ │                    REPOSITORY                          │
+ │        (Abstração da Origem dos Dados)                 │
+ └──────────────────────────┬─────────────────────────────┘
+                            │   Executa Queries
+                            ▼
+                            
+ ┌────────────────────────────────────────────────────────┐
+ │                    ROOM DATABASE                       │
+ │                  (SQLite Persistente)                  │
+ └──────────────────────────┴─────────────────────────────┘
 
 
 ### 📂 Estrutura do Repositório
 
 DevTITANS-Hands-On-Android/
+
 ├── jetcastersample/             # Projeto oficial de amostra do Google (referência de estudo)
+
 ├── PlainText/                   # Projeto principal do aplicativo
+
 │   └── app/src/main/java/com/devtitans/plaintext/
+
 │       ├── data/                # Entity, DAO, RoomDatabase e Repository
+
 │       ├── ui/                  # Composables, Screens, Components e Theme
+
 │       ├── navigation/          # NavHost, Rotas e Argumentos
+
 │       └── viewmodel/           # ViewModels e definição de UiStates
+
 ├── install_android_studio.sh    # Script auxiliar para instalação da IDE no Linux
+
 └── run_android_studio.sh        # Script auxiliar para execução da IDE
+
 
 ## 4. Configuração do Ambiente
 
