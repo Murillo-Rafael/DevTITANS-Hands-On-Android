@@ -178,18 +178,3 @@ Bash
     @Delete
     suspend fun deletePassword(password: PasswordEntity)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
