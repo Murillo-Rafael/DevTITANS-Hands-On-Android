@@ -71,39 +71,42 @@ O seu propósito principal é servir como uma aplicação de estudo prático par
 O projeto adota a arquitetura **MVVM (Model-View-ViewModel)** com um fluxo de dados unidirecional (**Unidirectional Data Flow - UDF**):
 
 
- ┌────────────────────────────────────────────────────────┐
- │                        VIEW  
- │
- │ 
-             (Jetpack Compose UI Screens)                │
- └──────────────────────────┬─────────────────────────────┘
+
+     ┌────────────────────────────────────────────────────────┐
+     │                        VIEW  
+     │            (Jetpack Compose UI Screens)                │
+     └──────────────────────────┬─────────────────────────────┘
                             
-                            │   Dispara Ações/Eventos (ex: onClick)
-                            ▼
+                                │   Dispara Ações/Eventos (ex: onClick)
+                                ▼
+
                             
- ┌────────────────────────────────────────────────────────┐
- │                     VIEWMODEL  
- │
- │             (StateFlow / UiState Holder)               │
- └──────────────────────────┬─────────────────────────────┘
+     ┌────────────────────────────────────────────────────────┐
+     │                     VIEWMODEL  
+     │
+     │             (StateFlow / UiState Holder)               │
+     └──────────────────────────┬─────────────────────────────┘
                             
-                            │   Chama operações assíncronas (Coroutines)
-                            ▼
+                                │   Chama operações assíncronas (Coroutines)
+                                ▼
+
                             
- ┌────────────────────────────────────────────────────────┐
- │                    REPOSITORY    
- │
- │        (Abstração da Origem dos Dados)                 │
- └──────────────────────────┬─────────────────────────────┘
+     ┌────────────────────────────────────────────────────────┐
+     │                    REPOSITORY    
+     │
+     │        (Abstração da Origem dos Dados)                 │
+     └──────────────────────────┬─────────────────────────────┘
                            
-                            │      Executa Queries
-                            ▼
+                                │      Executa Queries
+                                ▼
+
                             
- ┌────────────────────────────────────────────────────────┐
- │                    ROOM DATABASE    
- │
- │                  (SQLite Persistente)                  │
- └──────────────────────────┴─────────────────────────────┘
+     ┌────────────────────────────────────────────────────────┐
+     │                    ROOM DATABASE    
+     │
+     │                  (SQLite Persistente)                  │
+     └──────────────────────────┴─────────────────────────────┘
+
 
 
 ### 📂 Estrutura do Repositório
