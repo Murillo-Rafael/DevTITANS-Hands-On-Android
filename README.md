@@ -72,28 +72,36 @@ O projeto adota a arquitetura **MVVM (Model-View-ViewModel)** com um fluxo de da
 
 
  ┌────────────────────────────────────────────────────────┐
- │                        VIEW                            │
- │            (Jetpack Compose UI Screens)                │
+ │                        VIEW  
+ │
+ │ 
+             (Jetpack Compose UI Screens)                │
  └──────────────────────────┬─────────────────────────────┘
+                            
                             │   Dispara Ações/Eventos (ex: onClick)
                             ▼
                             
  ┌────────────────────────────────────────────────────────┐
- │                     VIEWMODEL                          │
+ │                     VIEWMODEL  
+ │
  │             (StateFlow / UiState Holder)               │
  └──────────────────────────┬─────────────────────────────┘
+                            
                             │   Chama operações assíncronas (Coroutines)
                             ▼
                             
  ┌────────────────────────────────────────────────────────┐
- │                    REPOSITORY                          │
+ │                    REPOSITORY    
+ │
  │        (Abstração da Origem dos Dados)                 │
  └──────────────────────────┬─────────────────────────────┘
-                            │   Executa Queries
+                           
+                            │      Executa Queries
                             ▼
                             
  ┌────────────────────────────────────────────────────────┐
- │                    ROOM DATABASE                       │
+ │                    ROOM DATABASE    
+ │
  │                  (SQLite Persistente)                  │
  └──────────────────────────┴─────────────────────────────┘
 
