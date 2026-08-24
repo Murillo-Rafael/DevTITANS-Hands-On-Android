@@ -178,6 +178,7 @@ Bash
     @Delete
     suspend fun deletePassword(password: PasswordEntity)
 }
+```
 
 ## UI e Navegação (Compose & Material 3)
 
@@ -207,11 +208,7 @@ sealed class Screen(val route: String) {
         fun createRoute(passwordId: Long) = "password_detail/$passwordId"
     }
 }
-
-
-
-
-
+``
 ##  Gerenciamento de Estado (ViewModel & Coroutines)
 
 ⚡ Estrutura do UiState
@@ -222,7 +219,7 @@ sealed interface PasswordUiState {
     data class Success(val passwords: List<PasswordEntity>) : PasswordUiState
     data class Error(val message: String) : PasswordUiState
 }
-
+``
 ⚙️ Responsabilidades do ViewModel (PasswordViewModel.kt)
 
     Expõe o estado da interface como um StateFlow<PasswordUiState>.
@@ -230,6 +227,7 @@ sealed interface PasswordUiState {
     Executa operações de leitura e gravação no banco dentro do escopo viewModelScope.
 
     Mantém o estado da tela preservado mesmo durante rotação de tela ou trocas de contexto.
+```
 
 ## Roteiro de Implementação e Tarefas
 
@@ -255,13 +253,14 @@ Fase 2: Regras de Negócio & Integração
     [x] Implementar funções CRUD completas (Inserir, Listar, Atualizar e Deletar).
 
     [x] Adicionar tratamentos de erro e estados de carregamento.
+    ```
 
 ##  Segurança e Limitações
 
 ### ⚠️ Vulnerabilidade do Texto Limpo (Plain Text)
 
 Por ser um aplicativo estritamente didático, os dados de usuários e senhas são armazenados em **texto limpo**. Isso significa que qualquer processo com acesso root ao sistema de arquivos do dispositivo consegue ler o arquivo de banco de dados SQLite sem barreiras.
-
+```
 ### 🛡️ Requisitos para Aplicação em Produção
 
 Caso o aplicativo fosse disponibilizado para uso comercial ou pessoal, as seguintes camadas de segurança precisariam ser implementadas:
@@ -270,7 +269,7 @@ Caso o aplicativo fosse disponibilizado para uso comercial ou pessoal, as seguin
 2. **EncryptedSharedPreferences:** Armazenamento seguro de chaves de acesso.
 3. **Android KeyStore System:** Armazenamento de chaves criptográficas em hardware dedicado (Keystore/TEE).
 4. **BiometricPrompt API:** Autenticação biométrica (Digital ou Reconhecimento Facial) para desbloqueio do app.
-
+```
 ##  Guia de Contribuição e Equipe
 
 ### 👥 Integrantes da Equipe
