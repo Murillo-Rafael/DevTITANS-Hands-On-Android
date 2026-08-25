@@ -29,27 +29,35 @@ fun PlainTextApp(
 ) {
     NavHost(
         navController = appState.navController,
-        startDestination = Screen.Hello("DevTITANS"),
+        startDestination = Screen.Login,
     )
     {
         composable<Screen.Hello>{
             var args = it.toRoute<Screen.Hello>()
             Hello_screen(args)
         }
-        composable<Screen.Login>{
+        composable<Screen.Login> {
             Login_screen(
                 navigateToSettings = {},
-                navigateToList = {}
+                navigateToList = appState::navigateToList
+            )
+        }
+
+        composable<Screen.List> {
+            ListView(
+                navigateToEdit = appState::navigateToEditList
             )
         }
         composable<Screen.EditList>(
             typeMap = mapOf(typeOf<PasswordInfo>() to parcelableType<PasswordInfo>())
         ) {
             val args = it.toRoute<Screen.EditList>()
+            val listViewModel: ListViewModel = hiltViewModel()
+
             EditList(
                 args,
-                navigateBack = {},
-                savePassword = { password -> Unit }
+                navigateBack = appState::navigateBack,
+                savePassword = listViewModel::savePassword
             )
         }
     }

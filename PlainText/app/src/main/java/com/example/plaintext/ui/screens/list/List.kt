@@ -3,6 +3,7 @@ package com.example.plaintext.ui.screens.list
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Arrangement
@@ -46,7 +47,41 @@ import com.example.plaintext.data.model.PasswordInfo
 
 @Composable
 fun ListView(
-) {}
+    navigateToEdit: (password: PasswordInfo) -> Unit,
+    viewModel: ListViewModel = hiltViewModel()
+) {
+    val listState = viewModel.listViewState
+
+    Scaffold(
+        topBar = {
+            TopBarComponent()
+        },
+        floatingActionButton = {
+            AddButton(
+                onClick = {
+                    navigateToEdit(
+                        PasswordInfo(
+                            id = -1,
+                            name = "",
+                            login = "",
+                            password = "",
+                            notes = null
+                        )
+                    )
+                }
+            )
+        }
+    ) { padding ->
+        ListItemContent(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize()
+                .background(Color(0xFF1B0B02)),
+            listState = listState,
+            navigateToEdit = navigateToEdit
+        )
+    }
+}
 
 @Composable
 fun AddButton(onClick: () -> Unit) {
@@ -66,25 +101,25 @@ fun ListItemContent(
     listState: ListViewState,
     navigateToEdit: (password: PasswordInfo) -> Unit
 ) {
-        when {
-            !listState.isCollected -> {
-                LoadingScreen()
-            }
+    when {
+        !listState.isCollected -> {
+            LoadingScreen()
+        }
 
-            else -> {
-                LazyColumn(
-                    modifier = modifier
-                        .fillMaxSize()
-                ) {
-                    items(listState.passwordList.size) {
-                        ListItem(
-                            listState.passwordList[it],
-                            navigateToEdit
-                        )
-                    }
+        else -> {
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxSize()
+            ) {
+                items(listState.passwordList.size) {
+                    ListItem(
+                        listState.passwordList[it],
+                        navigateToEdit
+                    )
                 }
             }
         }
+    }
 }
 
 @Composable
@@ -119,18 +154,29 @@ fun ListItem(
             contentDescription = "Logo",
             modifier = Modifier.fillMaxHeight()
         )
+
         Column(
             modifier = Modifier
                 .weight(.7f)
                 .padding(horizontal = 5.dp),
         ) {
-            Text(title, fontSize = 20.sp)
-            Text(subTitle, fontSize = 14.sp)
+            Text(
+                text = title,
+                fontSize = 20.sp,
+                color = Color.White
+            )
+
+            Text(
+                text = subTitle,
+                fontSize = 14.sp,
+                color = Color.White
+            )
         }
+
         Icon(
-            Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "Menu",
+            Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            contentDescription = "Menu",
             tint = Color.White
         )
     }
 }
-
