@@ -50,11 +50,17 @@ class PreferencesViewModel @Inject constructor(
     }
 
     fun updateLoginDigitado(login: String) {
-        preferencesState = preferencesState.copy(loginDigitado = login)
+        preferencesState = preferencesState.copy(
+            loginDigitado = login,
+            login = if (preferencesState.preencher) login else preferencesState.login
+        )
     }
 
     fun updatePasswordDigitado(password: String) {
-        preferencesState = preferencesState.copy(passwordDigitado = password)
+        preferencesState = preferencesState.copy(
+            passwordDigitado = password,
+            password = if (preferencesState.preencher) password else preferencesState.password
+        )
     }
 
     fun checkCredentials(): Boolean {
@@ -62,5 +68,25 @@ class PreferencesViewModel @Inject constructor(
                 preferencesState.passwordDigitado == preferencesState.password &&
                 preferencesState.login.isNotBlank() &&
                 preferencesState.password.isNotBlank()
+    }
+    fun updateSalvarLoginNaTelaLogin(preencher: Boolean) {
+        preferencesState = if (preencher) {
+            preferencesState.copy(
+                preencher = true,
+                login = preferencesState.loginDigitado,
+                password = preferencesState.passwordDigitado
+            )
+        } else {
+            preferencesState.copy(
+                preencher = false
+            )
+        }
+    }
+    fun salvarLoginDigitado() {
+        preferencesState = preferencesState.copy(
+            login = preferencesState.loginDigitado,
+            password = preferencesState.passwordDigitado,
+            preencher = true
+        )
     }
 }

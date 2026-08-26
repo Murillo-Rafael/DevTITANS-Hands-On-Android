@@ -180,7 +180,7 @@ fun Login_screen(
                     ) {
                         Checkbox(
                             checked = loginState.preencher,
-                            onCheckedChange = { viewModel.updatePreencher(it) }
+                            onCheckedChange = { viewModel.updateSalvarLoginNaTelaLogin(it) }
                         )
 
                         Text(
@@ -193,6 +193,10 @@ fun Login_screen(
 
                     Button(
                         onClick = {
+                            if (loginState.preencher) {
+                                viewModel.salvarLoginDigitado()
+                            }
+
                             if (viewModel.checkCredentials()) {
                                 navigateToList()
                             } else {
