@@ -27,6 +27,7 @@ import kotlin.reflect.typeOf
 fun PlainTextApp(
     appState: JetcasterAppState = rememberJetcasterAppState()
 ) {
+    val preferencesViewModel: PreferencesViewModel = hiltViewModel()
     NavHost(
         navController = appState.navController,
         startDestination = Screen.Login,
@@ -38,11 +39,17 @@ fun PlainTextApp(
         }
         composable<Screen.Login> {
             Login_screen(
-                navigateToSettings = {},
-                navigateToList = appState::navigateToList
+                navigateToSettings = appState::navigateToPreferences,
+                navigateToList = appState::navigateToList,
+                viewModel = preferencesViewModel
             )
         }
-
+        composable<Screen.Preferences> {
+            SettingsScreen(
+                navController = appState.navController,
+                viewModel = preferencesViewModel
+            )
+        }
         composable<Screen.List> {
             ListView(
                 navigateToEdit = appState::navigateToEditList

@@ -13,31 +13,54 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 data class PreferencesState(
-    var login: String,
-    var password: String,
-    var preencher: Boolean
+    val login: String = "",
+    val password: String = "",
+    val preencher: Boolean = false,
+    val loginDigitado: String = "",
+    val passwordDigitado: String = ""
 )
 
 @HiltViewModel
 class PreferencesViewModel @Inject constructor(
     handle: SavedStateHandle,
 ) : ViewModel() {
-    var preferencesState by mutableStateOf(PreferencesState(login = "devtitans", password = "123", preencher = true))
+    var preferencesState by mutableStateOf(PreferencesState())
         private set
 
     fun updateLogin(login: String) {
-
+        preferencesState = preferencesState.copy(
+            login = login,
+            loginDigitado = if (preferencesState.preencher) login else preferencesState.loginDigitado
+        )
     }
 
     fun updatePassword(password: String) {
-
+        preferencesState = preferencesState.copy(
+            password = password,
+            passwordDigitado = if (preferencesState.preencher) password else preferencesState.passwordDigitado
+        )
     }
 
     fun updatePreencher(preencher: Boolean) {
-
+        preferencesState = preferencesState.copy(
+            preencher = preencher,
+            loginDigitado = if (preencher) preferencesState.login else "",
+            passwordDigitado = if (preencher) preferencesState.password else ""
+        )
     }
 
-    fun checkCredentials(login: String, password: String): Boolean{
-        return login == preferencesState.login && password == preferencesState.password
+    fun updateLoginDigitado(login: String) {
+        preferencesState = preferencesState.copy(loginDigitado = login)
+    }
+
+    fun updatePasswordDigitado(password: String) {
+        preferencesState = preferencesState.copy(passwordDigitado = password)
+    }
+
+    fun checkCredentials(): Boolean {
+        return preferencesState.loginDigitado == preferencesState.login &&
+                preferencesState.passwordDigitado == preferencesState.password &&
+                preferencesState.login.isNotBlank() &&
+                preferencesState.password.isNotBlank()
     }
 }

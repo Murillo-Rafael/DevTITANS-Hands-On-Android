@@ -74,9 +74,7 @@ fun Login_screen(
     navigateToList: () -> Unit,
     viewModel: PreferencesViewModel = hiltViewModel()
 ) {
-    var login by rememberSaveable{mutableStateOf("") }
-    var password by rememberSaveable{ mutableStateOf("")}
-    var salvarLogin by rememberSaveable { mutableStateOf(false) }
+    val loginState = viewModel.preferencesState
     val context = LocalContext.current
 
     Scaffold(
@@ -141,8 +139,8 @@ fun Login_screen(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     OutlinedTextField(
-                        value = login,
-                        onValueChange = { login = it },
+                        value = loginState.loginDigitado,
+                        onValueChange = { viewModel.updateLoginDigitado(it) },
                         label = { Text("Login") },
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
@@ -159,8 +157,8 @@ fun Login_screen(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     OutlinedTextField(
-                        value = password,
-                        onValueChange = { password = it },
+                        value = loginState.passwordDigitado,
+                        onValueChange = { viewModel.updatePasswordDigitado(it) },
                         label = { Text("Senha") },
                         singleLine = true,
                         visualTransformation = PasswordVisualTransformation(),
@@ -181,8 +179,8 @@ fun Login_screen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Checkbox(
-                            checked = salvarLogin,
-                            onCheckedChange = { salvarLogin = it }
+                            checked = loginState.preencher,
+                            onCheckedChange = { viewModel.updatePreencher(it) }
                         )
 
                         Text(
@@ -195,7 +193,7 @@ fun Login_screen(
 
                     Button(
                         onClick = {
-                            if (viewModel.checkCredentials(login, password)) {
+                            if (viewModel.checkCredentials()) {
                                 navigateToList()
                             } else {
                                 Toast.makeText(

@@ -82,6 +82,10 @@ class JetcasterAppState(
         navController.popBackStack()
     }
 
+    fun navigateToPreferences() {
+        navController.navigate(Screen.Preferences)
+    }
+
 }
 
 /**

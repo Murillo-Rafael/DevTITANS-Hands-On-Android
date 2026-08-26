@@ -39,42 +39,47 @@ fun SettingsScreen(navController: NavHostController?,
 }
 
 @Composable
-fun SettingsContent(modifier: Modifier = Modifier, viewModel: PreferencesViewModel) {
+fun SettingsContent(
+    modifier: Modifier = Modifier,
+    viewModel: PreferencesViewModel
+) {
+    val preferencesState = viewModel.preferencesState
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
-            .verticalScroll(rememberScrollState())){
-
+            .verticalScroll(rememberScrollState())
+    ) {
         PreferenceInput(
             title = "Preencher Login",
             label = "Login",
-            fieldValue = "",
+            fieldValue = preferencesState.login,
             summary = "Preencher login na tela inicial"
-        ){
-            // função para alterar o login
+        ) { novoLogin ->
+            viewModel.updateLogin(novoLogin)
         }
 
         PreferenceInput(
             title = "Setar Senha",
-            label = "Label",
-            fieldValue = "",
+            label = "Senha",
+            fieldValue = preferencesState.password,
             summary = "Senha para entrar no sistema"
-        ){
-            // função para alterar a senha
+        ) { novaSenha ->
+            viewModel.updatePassword(novaSenha)
         }
 
         PreferenceItem(
             title = "Preencher Login",
             summary = "Preencher login na tela inicial",
             onClick = {
-                // deve alterar o estado que representa se o switch está ligado ou não
+                viewModel.updatePreencher(!preferencesState.preencher)
             },
             control = {
                 Switch(
-                    checked = false, // deve ler o estado que representa se o switch está ligado ou não
-                    onCheckedChange = {
-                        // deve alterar o estado que representa se o switch está ligado ou não
+                    checked = preferencesState.preencher,
+                    onCheckedChange = { preencher ->
+                        viewModel.updatePreencher(preencher)
                     }
                 )
             }
